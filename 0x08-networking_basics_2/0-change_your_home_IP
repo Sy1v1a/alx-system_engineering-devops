@@ -1,0 +1,17 @@
+#!/bin/bash
+# Write a Bash script that configures an Ubuntu server with the below requirements
+
+local_ip="127.0.0.2"
+facebook_ip="8.8.8.8"
+
+echo -e "$local_ip\tlocalhost" >> /etc/hosts
+echo -e "$facebook_ip\tfacebook.com" >> /etc/hosts
+
+echo "Updated /etc/hosts file:"
+cat /etc/hosts
+
+if command -v systemd-resolve &>/dev/null; then
+  echo "Flushing DNS cache..."
+  systemd-resolve --flush-caches
+fi
+echo "Configuration complete."

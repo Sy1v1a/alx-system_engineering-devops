@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Write a Bash script that displays all active IPv4 IPs on the machine it’s executed on
+if command -v ip &>/dev/null; then
+  ipv4_add=$(ip -o -4 addr show | awk '{print $4}')
+else
+  ipv4_add=$(ifconfig | grep 'inet addr:' | grep -v '127.0.0.1' | awk '{print $2}' | cut -d ':' -f 2)
+fi
