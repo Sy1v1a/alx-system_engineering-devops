@@ -1,28 +1,5 @@
-#!/bin/bash
-
-# Create an Ubuntu container and install Nginx
-sudo docker run -it --name nginx-container ubuntu
-sudo docker exec -it nginx-container bash
-apt update
-apt install nginx
-exit
-
-# Check and update Nginx configuration
-sudo docker exec -it nginx-container bash
-cat /etc/nginx/sites-available/default | grep "listen 80"
-if [ $? -eq 0 ]; then
-    echo "Nginx is already configured to listen on port 80."
-else
-    echo "Configuring Nginx to listen on port 80..."
-    echo 'server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    # Rest of your server block configuration...
-}' > /etc/nginx/sites-available/default
-    service nginx restart
-fi
-exit
-
-# Save the container as an image, remove the original container
-sudo docker commit nginx-container nginx-fixed
-sudo docker rm nginx-container
+#!/usr/bin/env bash
+# Script that make nginx listen to port 80
+rm /etc/nginx/sites-enabled/default
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+service nginx restart
